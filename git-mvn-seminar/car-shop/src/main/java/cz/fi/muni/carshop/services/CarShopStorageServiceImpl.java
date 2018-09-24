@@ -33,4 +33,8 @@ public class CarShopStorageServiceImpl implements CarShopStorageService {
 		CarShopStorage.getInstancce().getCars().computeIfAbsent(car.getType(), x -> new ArrayList<>()).add(car);
 	}
 
+	@Override
+	public void sellCar(Car car) {
+		CarShopStorage.getInstancce().getCars().computeIfAbsent(car.getType(), x -> new ArrayList<>()).remove(car);
+	}
 }
