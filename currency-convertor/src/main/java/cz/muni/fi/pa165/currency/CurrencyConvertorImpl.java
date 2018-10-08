@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Currency;
 
 
@@ -16,7 +15,8 @@ import java.util.Currency;
 public class CurrencyConvertorImpl implements CurrencyConvertor {
 
     private final ExchangeRateTable exchangeRateTable;
-    private final static Logger log = LoggerFactory.getLogger(CurrencyConvertorImpl.class);
+
+    private final Logger logger = LoggerFactory.getLogger(CurrencyConvertorImpl.class);
 
     public CurrencyConvertorImpl(ExchangeRateTable exchangeRateTable) {
         this.exchangeRateTable = exchangeRateTable;
@@ -24,24 +24,31 @@ public class CurrencyConvertorImpl implements CurrencyConvertor {
 
     @Override
     public BigDecimal convert(Currency sourceCurrency, Currency targetCurrency, BigDecimal sourceAmount) {
-        log.trace("convert({},{},{})",sourceCurrency, targetCurrency, sourceAmount);
+        logger.trace("Called method CurrencyConvertorImpl#convert");
+
         if (sourceCurrency == null) {
-            throw new IllegalArgumentException("sourceCurrency is null");
+            throw new IllegalArgumentException("Argument sourceCurrency is null");
         }
+
         if (targetCurrency == null) {
-            throw new IllegalArgumentException("targetCurrency is null");
+            throw new IllegalArgumentException("Argument targetCurrency is null");
         }
+
         if (sourceAmount == null) {
-            throw new IllegalArgumentException("sourceAmount is null");
+            throw new IllegalArgumentException("Argument sourceAmount is null");
         }
+
         try {
-            BigDecimal exchangeRate = exchangeRateTable.getExchangeRate(sourceCurrency, targetCurrency);
-            if (exchangeRate == null) {
-                throw new UnknownExchangeRateException("ExchangeRate is unknown");
+            BigDecimal rate = exchangeRateTable.getExchangeRate(sourceCurrency, targetCurrency);
+
+            if (rate == null) {
+                logger.warn("Unknown exchange rate");
+                throw new RuntimeException("Unknown exchange rate");
             }
-            return exchangeRate.multiply(sourceAmount).setScale(2, RoundingMode.HALF_EVEN);
-        } catch (ExternalServiceFailureException ex) {
-            throw new UnknownExchangeRateException("Error when fetching exchange rate", ex);
+            return sourceAmount.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
+        } catch (ExternalServiceFailureException e) {
+            logger.error("External service failure exception!");
+            throw new RuntimeException("Cannot convert source amount");
         }
     }
 
