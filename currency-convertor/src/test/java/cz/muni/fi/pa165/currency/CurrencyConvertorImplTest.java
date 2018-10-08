@@ -41,6 +41,11 @@ public class CurrencyConvertorImplTest {
                 Currency.getInstance("USD"))
         ).thenThrow(ExternalServiceFailureException.class);
 
+        Mockito.when(exchangeRateTable.getExchangeRate(
+                Currency.getInstance("CHF"),
+                Currency.getInstance("CZK"))
+        ).thenThrow(UnknownExchangeRateException.class);
+
         convertor = new CurrencyConvertorImpl(exchangeRateTable);
     }
 
@@ -74,13 +79,17 @@ public class CurrencyConvertorImplTest {
         convertor.convert(Currency.getInstance("EUR"), Currency.getInstance("CZK"), null);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = UnknownExchangeRateException.class)
     public void testConvertWithUnknownCurrency() {
         convertor.convert(Currency.getInstance("CHF"), Currency.getInstance("CZK"), new BigDecimal("1"));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testConvertWithExternalServiceFailure() {
+    @Test(expected = ExternalServiceFailureException.class)
+    public void testConvertWithExternalServiceFailure() throws ExternalServiceFailureException {
+        Mockito.when(exchangeRateTable.getExchangeRate(
+                Currency.getInstance("CZK"),
+                Currency.getInstance("USD"))
+        ).thenThrow(UnknownExchangeRateException.class);
         convertor.convert(Currency.getInstance("CZK"), Currency.getInstance("USD"), new BigDecimal("1"));
     }
 

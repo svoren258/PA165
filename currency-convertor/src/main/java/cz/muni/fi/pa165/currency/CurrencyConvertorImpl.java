@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import javax.inject.Named;
 
 
 /**
@@ -12,6 +13,7 @@ import java.util.Currency;
  *
  * @author petr.adamek@embedit.cz
  */
+@Named
 public class CurrencyConvertorImpl implements CurrencyConvertor {
 
     private final ExchangeRateTable exchangeRateTable;
