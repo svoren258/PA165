@@ -10,7 +10,7 @@ public class MainXml {
 
     public static void main(String [] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        CurrencyConvertor convertor = context.getBean(CurrencyConvertor.class);
+        CurrencyConvertor convertor = context.getBean(CurrencyConvertorImpl.class);
         convertor.convert(Currency.getInstance("EUR"), Currency.getInstance("CZK"), new BigDecimal("1"));
     }
 }

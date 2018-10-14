@@ -1,11 +1,13 @@
 package cz.muni.fi.pa165.currency;
 
+import org.springframework.context.annotation.Configuration;
+
 import java.math.BigDecimal;
 import java.util.Currency;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named
+@Named @Configuration
 public class ExchangeRateTableImpl implements ExchangeRateTable {
 
     public BigDecimal getExchangeRate(Currency sourceCurrency, Currency targetCurrency) {

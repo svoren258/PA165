@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.currency;
 
+import javax.inject.Named;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;

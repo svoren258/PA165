@@ -2,9 +2,12 @@ package cz.muni.fi.pa165.currency;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 
@@ -13,16 +16,21 @@ import javax.inject.Named;
  *
  * @author petr.adamek@embedit.cz
  */
-@Named
+@Named @Configuration
 public class CurrencyConvertorImpl implements CurrencyConvertor {
+
 
     private final ExchangeRateTable exchangeRateTable;
 
     private final Logger logger = LoggerFactory.getLogger(CurrencyConvertorImpl.class);
 
+    @Inject
     public CurrencyConvertorImpl(ExchangeRateTable exchangeRateTable) {
         this.exchangeRateTable = exchangeRateTable;
     }
+
+//    @Bean(name="currencyConvertor")
+//    public CurrencyConvertorImpl(ExchangeRateTable exchangeRateTable) { this.exchangeRateTable = exchangeRateTable; }
 
     @Override
     public BigDecimal convert(Currency sourceCurrency, Currency targetCurrency, BigDecimal sourceAmount) {

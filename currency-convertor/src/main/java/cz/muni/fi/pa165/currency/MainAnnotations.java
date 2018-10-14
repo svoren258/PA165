@@ -10,7 +10,9 @@ public class MainAnnotations {
 
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext("cz.muni.fi.pa165.currency");
-        CurrencyConvertor convertor =  context.getBean(CurrencyConvertor.class);
+        ((AnnotationConfigApplicationContext) context).scan("cz.muni.fi.pa165.currency");
+        ((AnnotationConfigApplicationContext) context).refresh();
+        CurrencyConvertor convertor =  context.getBean(CurrencyConvertorImpl.class);
         convertor.convert(Currency.getInstance("EUR"), Currency.getInstance("CZK"), new BigDecimal("1"));
     }
 }
