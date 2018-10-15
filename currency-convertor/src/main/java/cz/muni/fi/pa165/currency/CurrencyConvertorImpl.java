@@ -16,7 +16,7 @@ import javax.inject.Named;
  *
  * @author petr.adamek@embedit.cz
  */
-@Named @Configuration
+@Named
 public class CurrencyConvertorImpl implements CurrencyConvertor {
 
 
@@ -28,9 +28,6 @@ public class CurrencyConvertorImpl implements CurrencyConvertor {
     public CurrencyConvertorImpl(ExchangeRateTable exchangeRateTable) {
         this.exchangeRateTable = exchangeRateTable;
     }
-
-//    @Bean(name="currencyConvertor")
-//    public CurrencyConvertorImpl(ExchangeRateTable exchangeRateTable) { this.exchangeRateTable = exchangeRateTable; }
 
     @Override
     public BigDecimal convert(Currency sourceCurrency, Currency targetCurrency, BigDecimal sourceAmount) {

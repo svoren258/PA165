@@ -7,7 +7,7 @@ import java.util.Currency;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named @Configuration
+@Named
 public class ExchangeRateTableImpl implements ExchangeRateTable {
 
     public BigDecimal getExchangeRate(Currency sourceCurrency, Currency targetCurrency) {
